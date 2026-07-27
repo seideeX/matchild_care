@@ -2,6 +2,7 @@ import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export default function PrenatalCheckupsStep({ data, setData, errors }) {
     const [selectedVisit, setSelectedVisit] = useState(null);
@@ -57,49 +58,31 @@ export default function PrenatalCheckupsStep({ data, setData, errors }) {
         // If we're in edit mode and have a record ID, save to database
         if (data.id) {
             try {
-                // Get CSRF token
-                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-                if (!csrfToken) {
-                    throw new Error('CSRF token not found. Please refresh the page.');
-                }
-                
                 console.log('Sending visit data:', {
                     visit_date: data.visits[`visit_${visitNum}`],
                     vital_signs: vitalSigns,
                     is_completed: true,
                 });
                 
-                const response = await fetch(`/parent/maternal-care/${data.id}/visit/${visitNum}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken,
-                    },
-                    body: JSON.stringify({
-                        visit_date: data.visits[`visit_${visitNum}`],
-                        vital_signs: vitalSigns,
-                        is_completed: true,
-                    }),
+                const response = await axios.post(`/parent/maternal-care/${data.id}/visit/${visitNum}`, {
+                    visit_date: data.visits[`visit_${visitNum}`],
+                    vital_signs: vitalSigns,
+                    is_completed: true,
                 });
 
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({ message: `HTTP ${response.status}: ${response.statusText}` }));
-                    console.error('Server error:', errorData);
-                    
-                    // Show validation errors if present
-                    if (errorData.errors) {
-                        const errorMessages = Object.values(errorData.errors).flat().join('\n');
-                        throw new Error(`Validation errors:\n${errorMessages}`);
-                    }
-                    
-                    throw new Error(errorData.message || `HTTP ${response.status}: ${response.statusText}`);
-                }
-                
-                const result = await response.json();
-                console.log('Visit saved to database successfully:', result);
+                console.log('Visit saved to database successfully:', response.data);
             } catch (error) {
                 console.error('Error saving visit:', error);
-                alert(`Failed to save visit to database:\n${error.message}`);
+                
+                // Handle validation errors
+                if (error.response?.data?.errors) {
+                    const errorMessages = Object.values(error.response.data.errors).flat().join('\n');
+                    alert(`Validation errors:\n${errorMessages}`);
+                } else if (error.response?.data?.message) {
+                    alert(`Failed to save visit:\n${error.response.data.message}`);
+                } else {
+                    alert(`Failed to save visit to database:\n${error.message}`);
+                }
                 return;
             }
         } else {

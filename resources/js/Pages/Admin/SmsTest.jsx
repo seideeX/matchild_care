@@ -1,6 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { useState } from 'react';
+import axios from 'axios';
 
 export default function SmsTest({ auth, patients, config }) {
     const [activeTab, setActiveTab] = useState('basic');
@@ -30,24 +31,19 @@ export default function SmsTest({ auth, patients, config }) {
     const sendSms = async (endpoint, data) => {
         setLoading(true);
         try {
-            const response = await fetch(`/sms-test/${endpoint}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                },
-                body: JSON.stringify(data),
-            });
-
-            const result = await response.json();
+            const response = await axios.post(`/sms-test/${endpoint}`, data);
             
-            if (result.success) {
-                showMessage('success', result.message);
+            if (response.data.success) {
+                showMessage('success', response.data.message);
             } else {
-                showMessage('error', result.message);
+                showMessage('error', response.data.message);
             }
         } catch (error) {
-            showMessage('error', 'Network error: ' + error.message);
+            if (error.response?.data?.message) {
+                showMessage('error', error.response.data.message);
+            } else {
+                showMessage('error', 'Network error: ' + error.message);
+            }
         } finally {
             setLoading(false);
         }

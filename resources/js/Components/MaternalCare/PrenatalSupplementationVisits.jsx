@@ -2,6 +2,7 @@ import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export default function PrenatalSupplementationVisits({ data, setData, errors }) {
     const [selectedVisit, setSelectedVisit] = useState(null);
@@ -50,26 +51,20 @@ export default function PrenatalSupplementationVisits({ data, setData, errors })
         // If we're in edit mode and have a record ID, save to database
         if (data.id) {
             try {
-                const response = await fetch(`/parent/maternal-care/${data.id}/supplementation/${visitNum}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    },
-                    body: JSON.stringify({
-                        visit_date: visitData.date,
-                        tablets: visitData.tablets,
-                        vital_signs: vitalSigns,
-                        is_completed: true,
-                    }),
+                await axios.post(`/parent/maternal-care/${data.id}/supplementation/${visitNum}`, {
+                    visit_date: visitData.date,
+                    tablets: visitData.tablets,
+                    vital_signs: vitalSigns,
+                    is_completed: true,
                 });
-
-                if (!response.ok) {
-                    throw new Error('Failed to save supplementation visit');
-                }
             } catch (error) {
                 console.error('Error saving supplementation visit:', error);
-                alert('Failed to save supplementation visit. Please try again.');
+                if (error.response?.data?.errors) {
+                    const errorMessages = Object.values(error.response.data.errors).flat().join('\n');
+                    alert(`Validation errors:\n${errorMessages}`);
+                } else {
+                    alert('Failed to save supplementation visit. Please try again.');
+                }
                 return;
             }
         }

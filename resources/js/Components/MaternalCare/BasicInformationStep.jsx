@@ -119,22 +119,20 @@ function BasicInformationStep({ data, setData, errors, isEdit = false }) {
                             <InputError message={errors.first_name} className="mt-2" />
                         </div>
 
-            {/* SECTION 3 - Address */}
-            <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-md hover:shadow-lg transition-shadow duration-200 flex flex-col">
-                <div className="flex items-center gap-3 mb-5 pb-4 border-b border-gray-100">
-                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
+                        <div>
+                            <InputLabel htmlFor="middle_initial" value="Middle Initial" />
+                            <TextInput
+                                id="middle_initial"
+                                type="text"
+                                value={data.middle_initial}
+                                onChange={(e) => setData('middle_initial', e.target.value)}
+                                placeholder="M.I."
+                                maxLength="2"
+                            />
+                            <InputError message={errors.middle_initial} className="mt-2" />
+                        </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                        <h4 className="text-base font-bold text-gray-900 truncate">Contact Information</h4>
-                        <p className="text-xs text-gray-500 truncate">Address and phone number</p>
-                    </div>
-                </div>
-                
-                <div className="space-y-4 flex-1">
+
                     <div>
                         <InputLabel htmlFor="address" value="Complete Address" required />
                         <TextInput
@@ -176,21 +174,6 @@ function BasicInformationStep({ data, setData, errors, isEdit = false }) {
                             <span>Format: 09XXXXXXXXX or +639XXXXXXXXX</span>
                         </p>
                         <InputError message={errors.phone_number} className="mt-2" />
-                    </div>
-                </div>
-            </div>
-
-                    <div>
-                        <InputLabel htmlFor="address" value="Complete Address" required />
-                        <TextInput
-                            id="address"
-                            type="text"
-                            value={data.address}
-                            onChange={(e) => setData('address', e.target.value)}
-                            placeholder="Street, Barangay, City, Province"
-                            required
-                        />
-                        <InputError message={errors.address} className="mt-2" />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

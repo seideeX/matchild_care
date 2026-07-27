@@ -82,7 +82,6 @@ export default function Login({ status, canResetPassword }) {
                             value={data.password}
                             className="block w-full rounded-xl border-slate-200 py-3 ps-11 shadow-sm focus:border-violet-500 focus:ring-violet-500"
                             autoComplete="current-password"
-                            placeholder="e.g., FAM-001B"
                             onChange={(e) =>
                                 setData("password", e.target.value)
                             }
