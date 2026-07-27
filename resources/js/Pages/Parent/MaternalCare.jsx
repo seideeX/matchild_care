@@ -205,9 +205,9 @@ export default function MaternalCare({ records, filters = {} }) {
                                         </th>
                                         <th className="px-5 py-3.5 text-left">
                                             <span className="flex items-center gap-1.5 text-xs font-bold text-gray-500 uppercase tracking-wider">
-                                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                {/* <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                                </svg>
+                                                </svg> */}
                                                 Actions
                                             </span>
                                         </th>
