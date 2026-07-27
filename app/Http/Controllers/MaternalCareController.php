@@ -445,10 +445,8 @@ class MaternalCareController extends Controller
             }
 
             return redirect()
-                ->route('parent.maternal-care.register')
-                ->with('success', 'Maternal care record created successfully.');
                 ->route('parent.maternal-care')
-                ->with('success', "Maternal care record created successfully. Patient login: {$patientUser->username} / Password: {$defaultPassword}. SMS notifications sent to {$maternalRecord->phone_number}.");
+                ->with('success', "Maternal care record created successfully. Patient login: {$patientUser->username} / Password: {$defaultPassword}.");
 
         } catch (\Exception $e) {
             Log::error('Failed to create maternal care record', [
