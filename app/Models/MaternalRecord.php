@@ -18,6 +18,7 @@ class MaternalRecord extends Model
         'first_name',
         'middle_initial',
         'address',
+        'phone_number',
         'age',
         'age_group',
         'blood_pressure_systolic',
