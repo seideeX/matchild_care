@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maternal & Child Care Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            overflow: hidden;
+        }
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            padding: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .slide h1 {
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .slide h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .slide h3 {
+            font-size: 2rem;
+            margin-bottom: 25px;
+            color: #ffd700;
+        }
+        .slide p, .slide li {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        .slide ul {
+            list-style: none;
+            padding: 0;
+        }
+        .slide li {
+            padding-left: 40px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .slide li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-size: 1.8rem;
+            color: #ffd700;
+            font-weight: bold;
+        }
+        .content {
+            max-width: 1200px;
+            width: 100%;
+        }
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        .feature-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .feature-box h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #ffd700;
+        }
+        .feature-box li {
+            font-size: 1.2rem;
+            padding-left: 30px;
+        }
+        .feature-box li:before {
+            font-size: 1.4rem;
+        }
+        .flow-diagram {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        .flow-step {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px 40px;
+            border-radius: 20px;
+            text-align: center;
+            min-width: 200px;
+            margin: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        .flow-step h4 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+        .flow-step p {
+            font-size: 1.2rem;
+            margin: 0;
+        }
+        .arrow {
+            font-size: 3rem;
+            color: #ffd700;
+            margin: 0 10px;
+        }
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+        }
+        button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        button:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.05);
+        }
+        .slide-number {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .subtitle {
+            font-size: 1.8rem;
+            opacity: 0.9;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .highlight {
+            color: #ffd700;
+            font-weight: bold;
+        }
+        @media print {
+            .slide {
+                page-break-after: always;
+                display: flex !important;
+                height: 100vh;
+            }
+            .controls, .slide-number {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Slide 1: Title -->
+<div class="slide active" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="content" style="text-align: center;">
+        <h1>🏥 Maternal & Child Care<br/>Management System</h1>
+        <p class="subtitle">Comprehensive Healthcare Solution for Mothers and Children</p>
+        <p style="margin-top: 50px; font-size: 1.6rem;">Powered by Laravel & React</p>
+    </div>
+</div>
+
+<!-- Slide 2: Introduction -->
+<div class="slide" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+    <div class="content">
+        <h2>📋 Introduction</h2>
+        <p style="font-size: 1.6rem; margin-bottom: 40px;">A comprehensive web-based system designed to streamline maternal and child healthcare management.</p>
+        
+        <div class="feature-box" style="background: rgba(255, 255, 255, 0.2);">
+            <h3>What is it?</h3>
+            <ul>
+                <li>Digital health record management system</li>
+                <li>Connects patients and healthcare providers</li>
+                <li>Tracks prenatal care, delivery, and child immunization</li>
+                <li>Automated appointment reminders via SMS</li>
+                <li>Educational resources for pregnant mothers</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 3: Key Features -->
+<div class="slide" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+    <div class="content">
+        <h2>✨ Key Features</h2>
+        <div class="two-column">
+            <div class="feature-box">
+                <h3>👩‍⚕️ For Healthcare Workers</h3>
+                <ul>
+                    <li>Patient registration & management</li>
+                    <li>Prenatal visit tracking</li>
+                    <li>Nutritional assessments</li>
+                    <li>Delivery information records</li>
+                    <li>Child immunization tracking</li>
+                    <li>Automated SMS notifications</li>
+                </ul>
+            </div>
+            <div class="feature-box">
+                <h3>🤰 For Patients</h3>
+                <ul>
+                    <li>Personal health dashboard</li>
+                    <li>Complete medical records access</li>
+                    <li>Educational videos & articles</li>
+                    <li>Pregnancy tips & guidance</li>
+                    <li>Appointment reminders</li>
+                    <li>Profile management</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 4: System Flow -->
+<div class="slide" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+    <div class="content">
+        <h2>🔄 System Flow</h2>
+        <div class="flow-diagram">
+            <div class="flow-step">
+                <h4>1️⃣</h4>
+                <p><strong>Patient Registration</strong></p>
+                <p style="font-size: 1rem; margin-top: 10px;">Health worker creates patient account</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="flow-step">
+                <h4>2️⃣</h4>
+                <p><strong>SMS Notification</strong></p>
+                <p style="font-size: 1rem; margin-top: 10px;">Login credentials sent to patient</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="flow-step">
+                <h4>3️⃣</h4>
+                <p><strong>Prenatal Visits</strong></p>
+                <p style="font-size: 1rem; margin-top: 10px;">Regular checkups & assessments</p>
+            </div>
+        </div>
+        <div class="flow-diagram" style="margin-top: 20px;">
+            <div class="flow-step">
+                <h4>4️⃣</h4>
+                <p><strong>Record Tracking</strong></p>
+                <p style="font-size: 1rem; margin-top: 10px;">Complete prenatal care history</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="flow-step">
+                <h4>5️⃣</h4>
+                <p><strong>Delivery</strong></p>
+                <p style="font-size: 1rem; margin-top: 10px;">Birth information recorded</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="flow-step">
+                <h4>6️⃣</h4>
+                <p><strong>Child Care</strong></p>
+                <p style="font-size: 1rem; margin-top: 10px;">Immunization tracking</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 5: User Roles -->
+<div class="slide" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+    <div class="content">
+        <h2>👥 User Roles & Access</h2>
+        <div class="two-column">
+            <div class="feature-box">
+                <h3>🔐 Administrator</h3>
+                <ul>
+                    <li>Full system access</li>
+                    <li>User management</li>
+                    <li>System configuration</li>
+                    <li>Reports & analytics</li>
+                </ul>
+            </div>
+            <div class="feature-box">
+                <h3>👨‍⚕️ Health Worker</h3>
+                <ul>
+                    <li>Patient management</li>
+                    <li>Medical records entry</li>
+                    <li>Visit scheduling</li>
+                    <li>SMS notifications</li>
+                </ul>
+            </div>
+        </div>
+        <div style="margin-top: 30px;">
+            <div class="feature-box" style="max-width: 600px; margin: 0 auto;">
+                <h3>🤱 Patient</h3>
+                <ul>
+                    <li>View personal health records</li>
+                    <li>Access educational resources</li>
+                    <li>Receive appointment reminders</li>
+                    <li>Update profile information</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 6: Benefits -->
+<div class="slide" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="content">
+        <h2>🎯 System Benefits</h2>
+        <div class="two-column">
+            <div class="feature-box">
+                <h3>For Healthcare Providers</h3>
+                <ul>
+                    <li>Streamlined record management</li>
+                    <li>Reduced paperwork</li>
+                    <li>Better patient tracking</li>
+                    <li>Automated reminders</li>
+                    <li>Improved efficiency</li>
+                    <li>Data-driven insights</li>
+                </ul>
+            </div>
+            <div class="feature-box">
+                <h3>For Patients</h3>
+                <ul>
+                    <li>Easy access to health records</li>
+                    <li>Better health awareness</li>
+                    <li>Educational resources</li>
+                    <li>Timely appointment reminders</li>
+                    <li>Improved prenatal care</li>
+                    <li>Better health outcomes</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 7: Technical Stack -->
+<div class="slide" style="background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%);">
+    <div class="content">
+        <h2>⚙️ Technology Stack</h2>
+        <div class="two-column">
+            <div class="feature-box">
+                <h3>Backend</h3>
+                <ul>
+                    <li>Laravel 12 Framework</li>
+                    <li>PHP 8.2</li>
+                    <li>MySQL Database</li>
+                    <li>RESTful API</li>
+                    <li>Semaphore SMS API</li>
+                </ul>
+            </div>
+            <div class="feature-box">
+                <h3>Frontend</h3>
+                <ul>
+                    <li>React.js</li>
+                    <li>Inertia.js (SPA)</li>
+                    <li>Tailwind CSS</li>
+                    <li>Lucide Icons</li>
+                    <li>Responsive Design</li>
+                </ul>
+            </div>
+        </div>
+        <div class="feature-box" style="margin-top: 30px; max-width: 600px; margin: 30px auto 0;">
+            <h3>Additional Features</h3>
+            <ul>
+                <li>Role-based access control (Spatie Permissions)</li>
+                <li>PDF generation (DomPDF)</li>
+                <li>Secure authentication</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 8: Impact & Outcomes -->
+<div class="slide" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
+    <div class="content">
+        <h2>📊 Expected Impact</h2>
+        <div class="feature-box" style="background: rgba(255, 255, 255, 0.2); padding: 40px;">
+            <ul>
+                <li><span class="highlight">Improved Maternal Health:</span> Better prenatal care tracking and monitoring</li>
+                <li><span class="highlight">Enhanced Child Welfare:</span> Complete immunization records and schedules</li>
+                <li><span class="highlight">Increased Efficiency:</span> 70% reduction in administrative paperwork</li>
+                <li><span class="highlight">Better Communication:</span> Automated SMS reminders reduce missed appointments</li>
+                <li><span class="highlight">Data Integrity:</span> Centralized, secure digital records</li>
+                <li><span class="highlight">Healthcare Access:</span> Patients can view records anytime, anywhere</li>
+                <li><span class="highlight">Cost Reduction:</span> Lower operational costs through automation</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 9: Future Enhancements -->
+<div class="slide" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+    <div class="content">
+        <h2>🚀 Future Enhancements</h2>
+        <div class="two-column">
+            <div class="feature-box">
+                <h3>Planned Features</h3>
+                <ul>
+                    <li>Mobile application (iOS & Android)</li>
+                    <li>Telemedicine integration</li>
+                    <li>AI-powered health insights</li>
+                    <li>Multi-language support</li>
+                </ul>
+            </div>
+            <div class="feature-box">
+                <h3>Potential Integrations</h3>
+                <ul>
+                    <li>Laboratory systems</li>
+                    <li>Pharmacy management</li>
+                    <li>Government health databases</li>
+                    <li>Wearable health devices</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 10: Thank You -->
+<div class="slide" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="content" style="text-align: center;">
+        <h1>Thank You! 🙏</h1>
+        <p class="subtitle" style="font-size: 2rem; margin-top: 40px;">Maternal & Child Care Management System</p>
+        <p style="font-size: 1.8rem; margin-top: 60px;">Improving Healthcare, One Family at a Time</p>
+        <div style="margin-top: 80px; font-size: 1.4rem;">
+            <p>🌐 Built with Laravel & React</p>
+            <p style="margin-top: 20px;">📧 For more information, contact the development team</p>
+        </div>
+    </div>
+</div>
+
+<div class="slide-number">Slide <span id="current-slide">1</span> / <span id="total-slides">10</span></div>
+
+<div class="controls">
+    <button onclick="previousSlide()">← Previous</button>
+    <button onclick="nextSlide()">Next →</button>
+    <button onclick="toggleFullscreen()" style="background: rgba(255, 215, 0, 0.3);">⛶ Fullscreen</button>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    document.getElementById('total-slides').textContent = totalSlides;
+
+    function showSlide(n) {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (n + totalSlides) % totalSlides;
+        slides[currentSlide].classList.add('active');
+        document.getElementById('current-slide').textContent = currentSlide + 1;
+    }
+
+    function nextSlide() {
+        showSlide(currentSlide + 1);
+    }
+
+    function previousSlide() {
+        showSlide(currentSlide - 1);
+    }
+
+    function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        } else {
+            document.exitFullscreen();
+        }
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+            nextSlide();
+        } else if (e.key === 'ArrowLeft') {
+            previousSlide();
+        } else if (e.key === 'f' || e.key === 'F11') {
+            e.preventDefault();
+            toggleFullscreen();
+        }
+    });
+
+    // Touch swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    document.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+
+    document.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+
+    function handleSwipe() {
+        if (touchEndX < touchStartX - 50) nextSlide();
+        if (touchEndX > touchStartX + 50) previousSlide();
+    }
+</script>
+
+</body>
+</html>

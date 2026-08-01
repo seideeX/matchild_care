@@ -5,6 +5,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MaternalCareController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\SmsTestController;
+use App\Http\Controllers\SmsNotificationController;
+use App\Http\Controllers\EducationalContentController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -46,6 +48,27 @@ Route::get('/dashboard', function () {
         'this_month' => \App\Models\MaternalRecord::whereMonth('date_of_registration', now()->month)
             ->whereYear('date_of_registration', now()->year)
             ->count(),
+        
+        // Analytics data for charts
+        'age_distribution' => \App\Models\MaternalRecord::selectRaw('age_group, COUNT(*) as count')
+            ->groupBy('age_group')
+            ->get(),
+        'monthly_registrations' => \App\Models\MaternalRecord::selectRaw('MONTH(date_of_registration) as month, YEAR(date_of_registration) as year, COUNT(*) as count')
+            ->whereYear('date_of_registration', now()->year)
+            ->groupBy('month', 'year')
+            ->orderBy('month')
+            ->get(),
+        'sms_stats' => [
+            'total_sent' => \App\Models\SmsLog::where('status', 'sent')->count(),
+            'total_failed' => \App\Models\SmsLog::where('status', 'failed')->count(),
+            'this_month' => \App\Models\SmsLog::whereMonth('created_at', now()->month)->count(),
+        ],
+        'educational_content' => [
+            'videos' => \App\Models\EducationalVideo::count(),
+            'articles' => \App\Models\EducationalArticle::count(),
+            'active_videos' => \App\Models\EducationalVideo::where('is_active', true)->count(),
+            'active_articles' => \App\Models\EducationalArticle::where('is_active', true)->count(),
+        ],
     ];
 
     return Inertia::render('Dashboard', [
@@ -83,6 +106,35 @@ Route::middleware('auth')->group(function () {
     });
 
 });
+
+// SMS Notification Routes (Admin & Health Worker)
+Route::middleware(['auth'])->prefix('sms')->name('sms.')->group(function () {
+    Route::get('/', [SmsNotificationController::class, 'index'])->name('index');
+    Route::post('/send-to-patient', [SmsNotificationController::class, 'sendToPatient'])->name('send-to-patient');
+    Route::post('/send-bulk', [SmsNotificationController::class, 'sendBulk'])->name('send-bulk');
+    Route::get('/templates', [SmsNotificationController::class, 'templates'])->name('templates');
+    Route::put('/templates/{template}', [SmsNotificationController::class, 'updateTemplate'])->name('update-template');
+    Route::post('/templates', [SmsNotificationController::class, 'createTemplate'])->name('create-template');
+    Route::get('/logs', [SmsNotificationController::class, 'logs'])->name('logs');
+});
+
+// Educational Content Routes (Admin & Health Worker)
+Route::middleware(['auth'])->prefix('educational-content')->name('educational-content.')->group(function () {
+    Route::get('/', [EducationalContentController::class, 'index'])->name('index');
+    
+    // Video Routes
+    Route::post('/videos', [EducationalContentController::class, 'storeVideo'])->name('videos.store');
+    Route::put('/videos/{video}', [EducationalContentController::class, 'updateVideo'])->name('videos.update');
+    Route::delete('/videos/{video}', [EducationalContentController::class, 'destroyVideo'])->name('videos.destroy');
+    
+    // Article Routes
+    Route::post('/articles', [EducationalContentController::class, 'storeArticle'])->name('articles.store');
+    Route::put('/articles/{article}', [EducationalContentController::class, 'updateArticle'])->name('articles.update');
+    Route::delete('/articles/{article}', [EducationalContentController::class, 'destroyArticle'])->name('articles.destroy');
+});
+
+// API endpoint for patients to get educational content
+Route::middleware(['auth'])->get('/api/educational-content', [EducationalContentController::class, 'getActiveContent'])->name('api.educational-content');
 
 // SMS Testing Routes (Remove in production or protect with admin middleware)
 Route::middleware('auth')->prefix('sms-test')->name('sms-test.')->group(function () {

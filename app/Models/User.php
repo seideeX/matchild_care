@@ -49,4 +49,20 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the maternal record for the user
+     */
+    public function maternalRecord()
+    {
+        return $this->hasOne(MaternalRecord::class);
+    }
+
+    /**
+     * Get SMS logs for this user
+     */
+    public function smsLogs()
+    {
+        return $this->hasMany(SmsLog::class);
+    }
 }

@@ -35,9 +35,7 @@ export default function Login({ status, canResetPassword }) {
                 <p className="mt-2 text-sm text-slate-500">
                     Sign in to continue to your account.
                 </p>
-                <p className="mt-1 text-xs text-slate-400">
-                    Patients: Username = Family Serial, Password = Family Serial + First Letter of Surname (e.g., FAM-001B)
-                </p>
+
             </div>
 
             {status && (
